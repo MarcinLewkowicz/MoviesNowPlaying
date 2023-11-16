@@ -1,8 +1,6 @@
 package pl.ml.demo.movies.network
 
 import android.content.Context
-import coil.ImageLoader
-import coil.util.DebugLogger
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -63,20 +61,6 @@ object NetworkModule {
                 .build()
             return chain.proceed(request)
         }
-    }
-
-    @Provides
-    @Singleton
-    fun imageLoader(
-        okHttpCallFactory: Call.Factory,
-        @ApplicationContext application: Context,
-    ): ImageLoader {
-        val builder = ImageLoader.Builder(application)
-            .callFactory(okHttpCallFactory)
-        if (BuildConfig.DEBUG) {
-            builder.logger(DebugLogger())
-        }
-        return builder.build()
     }
 
     @Provides

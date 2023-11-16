@@ -7,11 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DiffUtil.Callback
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.databinding.ItemMovieBinding
 
-class MoviesRecyclerViewAdapter : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
+class MoviesRecyclerViewAdapter(
+    private val imageBaseUrl: String
+) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private var values: List<Movie> = emptyList()
 
@@ -24,7 +27,11 @@ class MoviesRecyclerViewAdapter : RecyclerView.Adapter<MoviesRecyclerViewAdapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.imageView.setImageResource(R.drawable.ic_launcher_background)
+        val url =  imageBaseUrl + item.backdropPath
+        holder.imageView.load(url) {
+            placeholder(R.drawable.ic_launcher_background)
+            fallback(R.drawable.ic_launcher_background)
+        }
         holder.contentView.text = item.title
     }
 

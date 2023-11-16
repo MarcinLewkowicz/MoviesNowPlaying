@@ -20,8 +20,8 @@ import pl.ml.demo.movies.ui.utils.MarginItemDecoration
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
 
-    private val adapter = MoviesRecyclerViewAdapter()
     private val viewModel: MoviesViewModel by viewModels()
+    private lateinit var adapter: MoviesRecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentMoviesListBinding.inflate(inflater, container, false)
@@ -40,6 +40,8 @@ class MoviesFragment : Fragment() {
         binding.moviesList.addItemDecoration(
             MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.list_item_margin), columnCount)
         )
+        val imageBaseUrl = getString(R.string.images_base_url)
+        adapter = MoviesRecyclerViewAdapter(imageBaseUrl)
         binding.moviesList.adapter = adapter
     }
 
@@ -59,7 +61,6 @@ class MoviesFragment : Fragment() {
                     MoviesScreenState.Loading -> { /* nothing else to do */ }
                 }
             }
-            binding.moviesList.adapter = MoviesRecyclerViewAdapter()
         }
     }
 
