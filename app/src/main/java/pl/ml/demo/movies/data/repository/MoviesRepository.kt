@@ -14,7 +14,7 @@ class MoviesRepository @Inject constructor(
     suspend fun getMoviesNowPlaying() : Result<List<Movie>> {
         return try {
             val movies = api.getMoviesNowPlaying()
-            Result.Success(movies)
+            Result.Success(movies.results)
         } catch (e: Exception) {
             Result.Error(e)
         }

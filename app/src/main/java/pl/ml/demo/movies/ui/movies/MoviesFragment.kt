@@ -40,6 +40,7 @@ class MoviesFragment : Fragment() {
         binding.moviesList.addItemDecoration(
             MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.list_item_margin), columnCount)
         )
+        binding.moviesList.adapter = adapter
     }
 
     private fun collectState(binding: FragmentMoviesListBinding) {
@@ -50,13 +51,12 @@ class MoviesFragment : Fragment() {
                 binding.loadingBar.isVisible = it is MoviesScreenState.Loading
                 when (it) {
                     is MoviesScreenState.Content -> {
-                        binding.moviesList.isVisible = true
-                        binding.errorView.isVisible = false
+                        adapter.setValues(it.movies)
                     }
                     is MoviesScreenState.Error -> {
                         binding.errorView.text = it.errorMessage
                     }
-                    MoviesScreenState.Loading -> { /* Nothing else to do */ }
+                    MoviesScreenState.Loading -> { /* nothing else to do */ }
                 }
             }
             binding.moviesList.adapter = MoviesRecyclerViewAdapter()
