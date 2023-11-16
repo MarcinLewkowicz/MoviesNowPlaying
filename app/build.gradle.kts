@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
 }
 
@@ -53,6 +54,8 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
