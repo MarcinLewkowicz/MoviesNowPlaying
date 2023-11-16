@@ -70,7 +70,12 @@ dependencies {
 
 fun getApiKey(): String {
     val propFile = rootProject.file("secret.properties")
-    val properties = Properties()
-    properties.load(FileInputStream(propFile))
-    return properties.getProperty("apiKey")
+    return if (propFile.exists()) {
+        val properties = Properties()
+        properties.load(FileInputStream(propFile))
+        properties.getProperty("apiKey")
+    } else {
+        System.getenv("MOVIES_NOW_PLAYING_API_KEY")
+            ?: throw IllegalStateException("You must provide the ApiKey for the Movie DB API. You can do it by creating 'secret.properties' file containing 'apiKey' property in root dir of the project or by defining MOVIES_NOW_PLAYING_API_KEY environment variable.")
+    }
 }
