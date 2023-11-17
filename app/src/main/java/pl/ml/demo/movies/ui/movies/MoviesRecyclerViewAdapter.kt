@@ -30,8 +30,8 @@ class MoviesRecyclerViewAdapter(
         val item = values[position]
         val url =  imageBaseUrl + item.backdropPath
         holder.imageView.load(url) {
-            placeholder(R.drawable.ic_launcher_background)
-            fallback(R.drawable.ic_launcher_background)
+            placeholder(R.color.image_placeholder)
+            fallback(R.color.image_placeholder)
         }
         holder.contentView.text = item.title
         holder.itemView.setOnClickListener {
