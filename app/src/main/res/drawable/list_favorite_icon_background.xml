@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <gradient
-        android:endColor="#BFFF"
-        android:centerColor="#BFFF"
-        android:startColor="#BFFF"
-        android:gradientRadius="50%"
-        android:type="radial" />
-</shape>
+<ripple android:color="?attr/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape
+            android:shape="oval">
+            <gradient
+                android:endColor="#BFFF"
+                android:centerColor="#BFFF"
+                android:startColor="#BFFF"
+                android:gradientRadius="50%"
+                android:type="radial" />
+        </shape>
+    </item>
+
+</ripple>
