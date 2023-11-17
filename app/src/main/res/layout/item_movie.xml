@@ -1,29 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:foreground="?android:attr/selectableItemBackground"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/movie_item_number"
-        android:layout_width="match_parent"
+        android:id="@+id/movie_picture"
+        android:layout_width="0dp"
         android:layout_height="@dimen/list_item_picture_height"
+        app:layout_constraintDimensionRatio="H,3:2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/movie_title"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_launcher_background"
         android:importantForAccessibility="no" />
 
     <TextView
-        android:id="@+id/movie_content"
-        android:layout_width="match_parent"
+        android:id="@+id/movie_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/movie_picture"
+        app:layout_constraintLeft_toLeftOf="@+id/movie_picture"
+        app:layout_constraintRight_toRightOf="@+id/movie_picture"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:lines="1"
         android:ellipsize="end"
-        android:textAppearance="?attr/textAppearanceListItemSecondary"
+        android:textAppearance="?attr/textAppearanceListItemSmall"
         android:layout_gravity="bottom|center_horizontal"
         android:paddingTop="@dimen/list_item_text_padding"
         android:paddingBottom="@dimen/list_item_text_padding"
         tools:text="This is a movie title!"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/favorite_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/movie_picture"
+        app:layout_constraintRight_toRightOf="@+id/movie_picture"
+        android:padding="@dimen/list_favorite_icon_padding"
+        android:layout_margin="@dimen/list_favorite_icon_margin"
+        android:src="@drawable/ic_star"
+        android:background="@drawable/list_favorite_icon_background"
+        android:contentDescription="@string/add_to_favorites"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

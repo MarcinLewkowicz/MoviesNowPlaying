@@ -14,7 +14,8 @@ import pl.ml.demo.movies.databinding.ItemMovieBinding
 
 class MoviesRecyclerViewAdapter(
     private val imageBaseUrl: String,
-    private val onItemClicked: (Movie) -> Unit
+    private val onItemClicked: (Movie) -> Unit,
+    private val onItemFavoriteClicked: (Movie) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private var values: List<Movie> = emptyList()
@@ -34,7 +35,10 @@ class MoviesRecyclerViewAdapter(
             fallback(R.color.image_placeholder)
             error(R.color.image_placeholder)
         }
-        holder.contentView.text = item.title
+        holder.titleView.text = item.title
+        holder.favoriteView.setOnClickListener {
+            onItemFavoriteClicked(item)
+        }
         holder.itemView.setOnClickListener {
             onItemClicked(item)
         }
@@ -48,8 +52,9 @@ class MoviesRecyclerViewAdapter(
     }
 
     inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        val imageView: ImageView = binding.movieItemNumber
-        val contentView: TextView = binding.movieContent
+        val imageView: ImageView = binding.moviePicture
+        val titleView: TextView = binding.movieTitle
+        val favoriteView: ImageView = binding.favoriteIcon
     }
 
     inner class DiffCallback(private val values: List<Movie>, private val newValues: List<Movie>) : Callback() {

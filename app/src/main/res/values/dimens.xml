@@ -7,4 +7,6 @@
     <dimen name="details_rate_margin">4dp</dimen>
     <dimen name="details_normal_spacing">16dp</dimen>
     <dimen name="details_small_spacing">4dp</dimen>
+    <dimen name="list_favorite_icon_margin">4dp</dimen>
+    <dimen name="list_favorite_icon_padding">6dp</dimen>
 </resources>

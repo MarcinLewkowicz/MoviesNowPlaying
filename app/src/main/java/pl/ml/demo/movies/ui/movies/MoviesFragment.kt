@@ -46,7 +46,7 @@ class MoviesFragment : Fragment() {
             MarginItemDecoration(space, columnCount)
         )
         val imageBaseUrl = getString(R.string.images_base_url)
-        adapter = MoviesRecyclerViewAdapter(imageBaseUrl, onItemClicked)
+        adapter = MoviesRecyclerViewAdapter(imageBaseUrl, onItemClicked, onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
     }
 
@@ -90,6 +90,10 @@ class MoviesFragment : Fragment() {
 
     private val onItemClicked: (Movie) -> Unit = {
         (activity as? MainNavigationInterface)?.navigateToMovieDetails(it)
+    }
+
+    private val onItemFavoriteClicked: (Movie) -> Unit = {
+        viewModel.toggleFavorite(it)
     }
 
 }

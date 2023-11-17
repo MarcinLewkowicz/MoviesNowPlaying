@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.data.repository.MoviesRepository
 import pl.ml.demo.movies.data.util.Result
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Content
@@ -75,6 +76,9 @@ class MoviesViewModel @Inject constructor(
                 loadContent()
             }
         }
+    }
+
+    fun toggleFavorite(movie: Movie) {
     }
 
 }
