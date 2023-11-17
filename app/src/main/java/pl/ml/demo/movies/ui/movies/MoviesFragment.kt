@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
+import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.databinding.FragmentMoviesListBinding
+import pl.ml.demo.movies.ui.MainNavigationInterface
 import pl.ml.demo.movies.ui.utils.MarginItemDecoration
 
 @AndroidEntryPoint
@@ -47,7 +49,7 @@ class MoviesFragment : Fragment() {
             MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.list_item_margin), columnCount)
         )
         val imageBaseUrl = getString(R.string.images_base_url)
-        adapter = MoviesRecyclerViewAdapter(imageBaseUrl, viewModel::onItemClicked)
+        adapter = MoviesRecyclerViewAdapter(imageBaseUrl, onItemClicked)
         binding.moviesList.adapter = adapter
     }
 
@@ -87,6 +89,10 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private val onItemClicked: (Movie) -> Unit = {
+        (activity as? MainNavigationInterface)?.navigateToMovieDetails(it)
     }
 
 }

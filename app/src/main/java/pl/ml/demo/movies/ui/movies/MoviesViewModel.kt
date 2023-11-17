@@ -77,8 +77,4 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun onItemClicked(itemId: Int) {
-        TODO("Not yet implemented")
-    }
-
 }

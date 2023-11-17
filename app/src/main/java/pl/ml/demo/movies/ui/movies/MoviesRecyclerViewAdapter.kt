@@ -14,7 +14,7 @@ import pl.ml.demo.movies.databinding.ItemMovieBinding
 
 class MoviesRecyclerViewAdapter(
     private val imageBaseUrl: String,
-    private val onItemClicked: (Int) -> Unit
+    private val onItemClicked: (Movie) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private var values: List<Movie> = emptyList()
@@ -35,7 +35,7 @@ class MoviesRecyclerViewAdapter(
         }
         holder.contentView.text = item.title
         holder.itemView.setOnClickListener {
-            onItemClicked(item.id)
+            onItemClicked(item)
         }
     }
 

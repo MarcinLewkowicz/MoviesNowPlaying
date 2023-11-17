@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.androidx.navigation.safeargs) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.kotlinKapt) apply false
 }

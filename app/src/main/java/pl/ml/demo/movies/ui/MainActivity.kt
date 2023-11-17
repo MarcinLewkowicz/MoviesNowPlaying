@@ -9,6 +9,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import pl.ml.demo.movies.R
+import pl.ml.demo.movies.data.model.Movie
+import pl.ml.demo.movies.ui.movies.MoviesFragmentDirections
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MainNavigationInterface {
@@ -28,9 +30,13 @@ class MainActivity : AppCompatActivity(), MainNavigationInterface {
         }
     }
 
-    override fun navigateToMovieDetails(movieId: Int) {
-        navController.navigate("")
-        TODO()
+    override fun navigateBack() {
+        navController.popBackStack()
+    }
+
+    override fun navigateToMovieDetails(movie: Movie) {
+        val direction = MoviesFragmentDirections.showMovieDetailsFragment(movie)
+        navController.navigate(direction)
     }
 
 }

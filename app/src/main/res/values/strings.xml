@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Movies Now Playing Demo</string>
+    <string name="movie_details_image_content_description">Okładka filmu</string>
+    <string name="detail_rating_label">%.1f/10</string>
 </resources>
