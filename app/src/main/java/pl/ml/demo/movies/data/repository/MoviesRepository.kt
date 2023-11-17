@@ -20,4 +20,8 @@ class MoviesRepository @Inject constructor(
         }
     }
 
+    fun searchMovies(query: String): Result<List<Movie>> {
+        return Result.Error(Exception("Nothing found for '$query'."))
+    }
+
 }
