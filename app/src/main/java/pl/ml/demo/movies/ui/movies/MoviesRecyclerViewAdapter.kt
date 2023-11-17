@@ -13,7 +13,8 @@ import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.databinding.ItemMovieBinding
 
 class MoviesRecyclerViewAdapter(
-    private val imageBaseUrl: String
+    private val imageBaseUrl: String,
+    private val onItemClicked: (Int) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private var values: List<Movie> = emptyList()
@@ -33,6 +34,9 @@ class MoviesRecyclerViewAdapter(
             fallback(R.drawable.ic_launcher_background)
         }
         holder.contentView.text = item.title
+        holder.itemView.setOnClickListener {
+            onItemClicked(item.id)
+        }
     }
 
     fun setValues(newValues: List<Movie>) {

@@ -47,7 +47,7 @@ class MoviesFragment : Fragment() {
             MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.list_item_margin), columnCount)
         )
         val imageBaseUrl = getString(R.string.images_base_url)
-        adapter = MoviesRecyclerViewAdapter(imageBaseUrl)
+        adapter = MoviesRecyclerViewAdapter(imageBaseUrl, viewModel::onItemClicked)
         binding.moviesList.adapter = adapter
     }
 
