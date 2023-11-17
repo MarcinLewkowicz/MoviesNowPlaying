@@ -26,6 +26,7 @@ class MovieDetailsFragment : Fragment() {
             movieImage.load(getString(R.string.images_base_url) + movie.backdropPath) {
                 placeholder(R.color.image_placeholder)
                 fallback(R.color.image_placeholder)
+                error(R.color.image_placeholder)
             }
             movieTitle.text = movie.title
             movieOverview.text = movie.overview

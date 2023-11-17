@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="list_item_margin">16dp</dimen>
-    <dimen name="list_item_text_padding">8dp</dimen>
-    <dimen name="list_item_picture_height">200dp</dimen>
+    <dimen name="list_item_text_padding">4dp</dimen>
+    <dimen name="list_item_picture_height">250dp</dimen>
     <dimen name="details_text_margin">16dp</dimen>
     <dimen name="details_rate_margin">4dp</dimen>
     <dimen name="details_normal_spacing">16dp</dimen>

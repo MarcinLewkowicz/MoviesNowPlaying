@@ -28,10 +28,11 @@ class MoviesRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        val url =  imageBaseUrl + item.backdropPath
+        val url =  imageBaseUrl + item.posterPath
         holder.imageView.load(url) {
             placeholder(R.color.image_placeholder)
             fallback(R.color.image_placeholder)
+            error(R.color.image_placeholder)
         }
         holder.contentView.text = item.title
         holder.itemView.setOnClickListener {

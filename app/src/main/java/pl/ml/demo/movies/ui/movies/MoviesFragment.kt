@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
@@ -40,13 +39,11 @@ class MoviesFragment : Fragment() {
 
     private fun setupViews(binding: FragmentMoviesListBinding) {
         val columnCount =
-            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
-        binding.moviesList.layoutManager = when {
-            columnCount <= 1 -> LinearLayoutManager(context)
-            else -> GridLayoutManager(context, columnCount)
-        }
+            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
+        binding.moviesList.layoutManager = GridLayoutManager(context, columnCount)
+        val space = resources.getDimensionPixelSize(R.dimen.list_item_margin)
         binding.moviesList.addItemDecoration(
-            MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.list_item_margin), columnCount)
+            MarginItemDecoration(space, columnCount)
         )
         val imageBaseUrl = getString(R.string.images_base_url)
         adapter = MoviesRecyclerViewAdapter(imageBaseUrl, onItemClicked)
