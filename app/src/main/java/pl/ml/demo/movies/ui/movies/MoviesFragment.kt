@@ -71,9 +71,8 @@ class MoviesFragment : Fragment() {
     private fun collectState(binding: FragmentMoviesListBinding) {
         viewLifecycleScope.launch {
             viewModel.state.collect {
-                binding.moviesList.isVisible = it is MoviesScreenState.Content
+                binding.moviesList.isVisible = it !is MoviesScreenState.Error
                 binding.errorView.isVisible = it is MoviesScreenState.Error
-                binding.loadingBar.isVisible = it is MoviesScreenState.Loading
                 when (it) {
                     is MoviesScreenState.Content -> {
                         adapter.setValues(it.movies)
