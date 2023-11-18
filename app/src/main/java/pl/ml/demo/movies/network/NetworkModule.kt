@@ -1,11 +1,9 @@
 package pl.ml.demo.movies.network
 
-import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Call
@@ -15,7 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.ml.demo.movies.BuildConfig
-import pl.ml.demo.movies.R
+import pl.ml.demo.movies.config.ConfigProvider
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -68,10 +66,10 @@ object NetworkModule {
     fun moviesApiService(
         networkJson: Json,
         okHttpCallFactory: Call.Factory,
-        @ApplicationContext application: Context,
+        configProvider: ConfigProvider,
     ) : MoviesApi {
         return Retrofit.Builder()
-            .baseUrl(application.getString(R.string.movies_api_base_url))
+            .baseUrl(configProvider.getMoviesApiBaseUrl())
             .callFactory(okHttpCallFactory)
             .addConverterFactory(
                 networkJson.asConverterFactory("application/json".toMediaType()),

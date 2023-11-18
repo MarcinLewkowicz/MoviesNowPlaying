@@ -10,8 +10,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.data.model.Movie
-import pl.ml.demo.movies.data.repository.MoviesRepository
+import pl.ml.demo.movies.data.repository.FavoritesRepository
 import pl.ml.demo.movies.data.util.Result
+import pl.ml.demo.movies.domain.model.MovieItem
+import pl.ml.demo.movies.domain.usecase.GetMoviesListUseCase
+import pl.ml.demo.movies.domain.usecase.MapToScreenMoviesListUseCase
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Content
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Error
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Loading
@@ -20,7 +23,9 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val repository: MoviesRepository
+    private val getMoviesListUseCase: GetMoviesListUseCase,
+    private val mapToScreenMoviesListUseCase: MapToScreenMoviesListUseCase,
+    private val favoritesRepository: FavoritesRepository,
 ) : ViewModel() {
 
     private val TAG = "MoviesViewModel"
@@ -32,22 +37,22 @@ class MoviesViewModel @Inject constructor(
     private var query: String = ""
     private var queryReloadJob: Job? = null
 
+    private var cachedItems: List<Movie> = emptyList()
+
     init {
         loadContent()
     }
 
-    fun loadContent() {
+    private fun loadContent() {
         Log.d(TAG, "loadContent() => query: $query")
         viewModelScope.launch {
             _state.value = Loading
-            val result = if (query.isEmpty()) {
-                repository.getMoviesNowPlaying()
-            } else {
-                repository.searchMovies(query)
-            }
+            val result = getMoviesListUseCase(query)
             when (result) {
                 is Result.Success -> {
-                    _state.value = Content(result.data)
+                    cachedItems = result.data
+                    val screenItems = mapToScreenMoviesListUseCase(result.data)
+                    _state.value = Content(screenItems)
                 }
                 is Result.Error -> {
                     // TODO - change to user-friendly info
@@ -55,6 +60,11 @@ class MoviesViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun updateContent() {
+        val screenItems = mapToScreenMoviesListUseCase(cachedItems)
+        _state.value = Content(screenItems)
     }
 
     fun onQueryChanged(newText: String?) {
@@ -78,7 +88,9 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun toggleFavorite(movie: Movie) {
+    fun onItemFavoriteClicked(movie: MovieItem) {
+        favoritesRepository.toggleFavoriteMovie(movie)
+        updateContent()
     }
 
 }

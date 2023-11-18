@@ -1,8 +1,8 @@
 package pl.ml.demo.movies.ui
 
-import pl.ml.demo.movies.data.model.Movie
+import pl.ml.demo.movies.domain.model.MovieItem
 
 interface MainNavigationInterface {
     fun navigateBack()
-    fun navigateToMovieDetails(movie: Movie)
+    fun navigateToMovieDetails(movie: MovieItem)
 }

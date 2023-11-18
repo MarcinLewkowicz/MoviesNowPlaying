@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
-import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.databinding.FragmentMoviesListBinding
+import pl.ml.demo.movies.domain.model.MovieItem
 import pl.ml.demo.movies.ui.MainNavigationInterface
 import pl.ml.demo.movies.ui.utils.MarginItemDecoration
 
@@ -45,8 +45,7 @@ class MoviesFragment : Fragment() {
         binding.moviesList.addItemDecoration(
             MarginItemDecoration(space, columnCount)
         )
-        val imageBaseUrl = getString(R.string.images_base_url)
-        adapter = MoviesRecyclerViewAdapter(imageBaseUrl, onItemClicked, onItemFavoriteClicked)
+        adapter = MoviesRecyclerViewAdapter(onItemClicked, viewModel::onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
     }
 
@@ -88,12 +87,8 @@ class MoviesFragment : Fragment() {
         }
     }
 
-    private val onItemClicked: (Movie) -> Unit = {
+    private val onItemClicked: (MovieItem) -> Unit = {
         (activity as? MainNavigationInterface)?.navigateToMovieDetails(it)
-    }
-
-    private val onItemFavoriteClicked: (Movie) -> Unit = {
-        viewModel.toggleFavorite(it)
     }
 
 }

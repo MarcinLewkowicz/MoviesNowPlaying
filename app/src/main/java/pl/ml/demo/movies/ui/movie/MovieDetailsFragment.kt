@@ -23,7 +23,7 @@ class MovieDetailsFragment : Fragment() {
     private fun setupViews(binding: FragmentMovieDetailsBinding) {
         val movie = args.movie
         with (binding) {
-            movieImage.load(getString(R.string.images_base_url) + movie.backdropPath) {
+            movieImage.load(movie.backdropUrl) {
                 placeholder(R.color.image_placeholder)
                 fallback(R.color.image_placeholder)
                 error(R.color.image_placeholder)
@@ -31,7 +31,7 @@ class MovieDetailsFragment : Fragment() {
             movieTitle.text = movie.title
             movieOverview.text = movie.overview
             movieDate.text = movie.releaseDate
-            movieRate.text = getString(R.string.detail_rating_label, movie.voteAverage)
+            movieRate.text = movie.voteAverage
         }
     }
 

@@ -11,7 +11,7 @@ class MoviesRepository @Inject constructor(
     private val api: MoviesApi
 ) {
 
-    suspend fun getMoviesNowPlaying() : Result<List<Movie>> {
+    suspend fun getMoviesNowPlaying(): Result<List<Movie>> {
         return try {
             val movies = api.getMoviesNowPlaying()
             Result.Success(movies.results)

@@ -1,5 +1,6 @@
 package pl.ml.demo.movies.ui.movies
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,17 +10,17 @@ import androidx.recyclerview.widget.DiffUtil.Callback
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import pl.ml.demo.movies.R
-import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.databinding.ItemMovieBinding
+import pl.ml.demo.movies.domain.model.MovieItem
+
 
 class MoviesRecyclerViewAdapter(
-    private val imageBaseUrl: String,
-    private val onItemClicked: (Movie) -> Unit,
-    private val onItemFavoriteClicked: (Movie) -> Unit
+    private val onItemClicked: (MovieItem) -> Unit,
+    private val onItemFavoriteClicked: (MovieItem) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
-    private var values: List<Movie> = emptyList()
-
+    private val TAG = "MoviesRecyclerViewAdapter"
+    private var values: List<MovieItem> = emptyList()
     override fun getItemCount(): Int = values.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,14 +29,15 @@ class MoviesRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.d(TAG, "onBindViewHolder()")
         val item = values[position]
-        val url =  imageBaseUrl + item.posterPath
-        holder.imageView.load(url) {
+        holder.imageView.load(item.posterUrl) {
             placeholder(R.color.image_placeholder)
             fallback(R.color.image_placeholder)
             error(R.color.image_placeholder)
         }
         holder.titleView.text = item.title
+        holder.favoriteView.isSelected = item.isFavorite
         holder.favoriteView.setOnClickListener {
             onItemFavoriteClicked(item)
         }
@@ -44,7 +46,17 @@ class MoviesRecyclerViewAdapter(
         }
     }
 
-    fun setValues(newValues: List<Movie>) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        Log.d(TAG, "onBindViewHolder() at $position, payloads => $payloads")
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            val item = values[position]
+            holder.favoriteView.isSelected = item.isFavorite
+        }
+    }
+
+    fun setValues(newValues: List<MovieItem>) {
         val callback = DiffCallback(values, newValues)
         val diff = DiffUtil.calculateDiff(callback)
         values = newValues
@@ -57,17 +69,29 @@ class MoviesRecyclerViewAdapter(
         val favoriteView: ImageView = binding.favoriteIcon
     }
 
-    inner class DiffCallback(private val values: List<Movie>, private val newValues: List<Movie>) : Callback() {
+    private val KEY_FAVORITE = "KEY_FAVORITE"
 
-        override fun getOldListSize(): Int = values.size
+    inner class DiffCallback(private val oldValues: List<MovieItem>, private val newValues: List<MovieItem>) : Callback() {
+
+        override fun getOldListSize(): Int = oldValues.size
 
         override fun getNewListSize(): Int = newValues.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            values[oldItemPosition].id == newValues[newItemPosition].id
+            oldValues[oldItemPosition].id == newValues[newItemPosition].id
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-            values[oldItemPosition] == newValues[newItemPosition]
+            oldValues[oldItemPosition] == newValues[newItemPosition]
+
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): MutableSet<Any>? {
+            val newItem= newValues[newItemPosition]
+            val oldItem = oldValues[oldItemPosition]
+            val set = mutableSetOf<Any>()
+            if (newItem.isFavorite != oldItem.isFavorite) {
+                set += KEY_FAVORITE
+            }
+            return if (set.isEmpty()) null else set
+        }
 
     }
 

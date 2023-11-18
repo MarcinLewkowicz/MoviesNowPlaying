@@ -44,7 +44,7 @@
         app:layout_constraintRight_toRightOf="@+id/movie_picture"
         android:padding="@dimen/list_favorite_icon_padding"
         android:layout_margin="@dimen/list_favorite_icon_margin"
-        android:src="@drawable/ic_star"
+        android:src="@drawable/ic_star_selector"
         android:background="@drawable/list_favorite_icon_background"
         android:contentDescription="@string/add_to_favorites"/>
 
