@@ -24,6 +24,8 @@
             android:id="@+id/movies_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/list_item_margin"
+            android:layout_marginRight="@dimen/list_item_margin"
             app:layoutManager="LinearLayoutManager"
             tools:context=".ui.movies.MoviesFragment"
             tools:listitem="@layout/item_movie" />

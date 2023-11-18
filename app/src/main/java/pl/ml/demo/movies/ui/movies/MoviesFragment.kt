@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.databinding.FragmentMoviesListBinding
 import pl.ml.demo.movies.ui.MainNavigationInterface
-import pl.ml.demo.movies.ui.utils.MarginItemDecoration
 import pl.ml.demo.movies.ui.utils.viewLifecycleScope
 
 @AndroidEntryPoint
@@ -46,10 +45,6 @@ class MoviesFragment : Fragment() {
         val columnCount =
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
         binding.moviesList.layoutManager = GridLayoutManager(context, columnCount)
-        val space = resources.getDimensionPixelSize(R.dimen.list_item_margin)
-        binding.moviesList.addItemDecoration(
-            MarginItemDecoration(space, columnCount)
-        )
         adapter = MoviesRecyclerViewAdapter(viewModel::onItemClicked, viewModel::onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
     }
