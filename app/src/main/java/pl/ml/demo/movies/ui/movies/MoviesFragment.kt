@@ -4,9 +4,12 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.MenuItem.OnActionExpandListener
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.isVisible
@@ -53,8 +56,8 @@ class MoviesFragment : Fragment() {
     }
 
     private fun setupSearchView(binding: FragmentMoviesListBinding) {
-        val item = binding.moviesToolbar.menu?.findItem(R.id.action_search)
-        val searchView = item?.actionView as? SearchView
+        val searchItem = binding.moviesToolbar.menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as? SearchView
         searchView?.imeOptions = EditorInfo.IME_ACTION_DONE
         searchView?.inputType = EditorInfo.TYPE_CLASS_TEXT + EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE
         searchView?.setOnQueryTextListener(object : OnQueryTextListener {
@@ -68,6 +71,28 @@ class MoviesFragment : Fragment() {
                     Log.d(TAG, "onQueryTextChange: $newText")
                     viewModel.onQueryChanged(newText)
                 }
+                return true
+            }
+        })
+        setupOnBackPressCallback(binding, searchItem)
+    }
+
+    private fun setupOnBackPressCallback(
+        binding: FragmentMoviesListBinding,
+        searchItem: MenuItem?
+    ) {
+        val onBackPressedCallback = LocalOnBackPressedCallback(binding)
+        activity?.onBackPressedDispatcher?.addCallback(onBackPressedCallback)
+        searchItem?.setOnActionExpandListener(object : OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                Log.d(TAG, "onMenuItemActionExpand")
+                onBackPressedCallback.isEnabled = true
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                Log.d(TAG, "onMenuItemActionCollapse")
+                onBackPressedCallback.isEnabled = false
                 return true
             }
         })
@@ -107,6 +132,14 @@ class MoviesFragment : Fragment() {
 
     private fun navigateToMovieDetails(it: MoviesViewModel.Action.NavigateToDetails) {
         (activity as? MainNavigationInterface)?.navigateToMovieDetails(it.movie)
+    }
+
+    inner class LocalOnBackPressedCallback(private val binding: FragmentMoviesListBinding) : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            Log.d(TAG, "handleOnBackPressed")
+            val item = binding.moviesToolbar.menu?.findItem(R.id.action_search)
+            item?.collapseActionView()
+        }
     }
 
 }
