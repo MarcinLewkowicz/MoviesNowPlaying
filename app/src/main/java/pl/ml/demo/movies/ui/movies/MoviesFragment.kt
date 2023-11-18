@@ -12,15 +12,14 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.databinding.FragmentMoviesListBinding
-import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.ui.MainNavigationInterface
 import pl.ml.demo.movies.ui.utils.MarginItemDecoration
+import pl.ml.demo.movies.ui.utils.viewLifecycleScope
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
@@ -51,7 +50,7 @@ class MoviesFragment : Fragment() {
         binding.moviesList.addItemDecoration(
             MarginItemDecoration(space, columnCount)
         )
-        adapter = MoviesRecyclerViewAdapter(onItemClicked, viewModel::onItemFavoriteClicked)
+        adapter = MoviesRecyclerViewAdapter(viewModel::onItemClicked, viewModel::onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
     }
 
@@ -75,7 +74,7 @@ class MoviesFragment : Fragment() {
     }
 
     private fun collectState(binding: FragmentMoviesListBinding) {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleScope.launch {
             viewModel.state.collect {
                 binding.moviesList.isVisible = it is MoviesScreenState.Content
                 binding.errorView.isVisible = it is MoviesScreenState.Error
@@ -91,10 +90,17 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
+        viewLifecycleScope.launch {
+            viewModel.action.collect {
+                when (it) {
+                    is MoviesViewModel.Action.NavigateToDetails -> navigateToMovieDetails(it)
+                }
+            }
+        }
     }
 
-    private val onItemClicked: (MovieScreenItem) -> Unit = {
-        (activity as? MainNavigationInterface)?.navigateToMovieDetails(it)
+    private fun navigateToMovieDetails(it: MoviesViewModel.Action.NavigateToDetails) {
+        (activity as? MainNavigationInterface)?.navigateToMovieDetails(it.movie)
     }
 
 }

@@ -15,8 +15,8 @@ import pl.ml.demo.movies.domain.model.MovieScreenItem
 
 
 class MoviesRecyclerViewAdapter(
-    private val onItemClicked: (MovieScreenItem) -> Unit,
-    private val onItemFavoriteClicked: (MovieScreenItem) -> Unit
+    private val onItemClicked: (Int) -> Unit,
+    private val onItemFavoriteClicked: (Int) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "MoviesRecyclerViewAdapter"
@@ -39,10 +39,10 @@ class MoviesRecyclerViewAdapter(
         holder.titleView.text = item.title
         holder.favoriteView.isSelected = item.isFavorite
         holder.favoriteView.setOnClickListener {
-            onItemFavoriteClicked(item)
+            onItemFavoriteClicked(item.id)
         }
         holder.itemView.setOnClickListener {
-            onItemClicked(item)
+            onItemClicked(item.id)
         }
     }
 

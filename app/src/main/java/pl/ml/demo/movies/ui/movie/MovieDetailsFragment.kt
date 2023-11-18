@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.databinding.FragmentMovieDetailsBinding
+import pl.ml.demo.movies.ui.utils.viewLifecycleScope
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
@@ -33,7 +33,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun collectState(binding: FragmentMovieDetailsBinding) {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleScope.launch {
             viewModel.state.collect {
                 val movie = it.movieScreenItem
                 with(binding) {

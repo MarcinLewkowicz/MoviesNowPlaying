@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.data.model.Movie
@@ -14,6 +15,7 @@ import pl.ml.demo.movies.data.repository.FavoritesRepository
 import pl.ml.demo.movies.data.util.Result
 import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.domain.usecase.GetMoviesListUseCase
+import pl.ml.demo.movies.domain.usecase.MapToMovieScreenItemUseCase
 import pl.ml.demo.movies.domain.usecase.MapToMovieScreenItemsListUseCase
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Content
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Error
@@ -24,6 +26,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val getMoviesListUseCase: GetMoviesListUseCase,
+    private val mapToScreenMovieScreenItem: MapToMovieScreenItemUseCase,
     private val mapToScreenMoviesListUseCase: MapToMovieScreenItemsListUseCase,
     private val favoritesRepository: FavoritesRepository,
 ) : ViewModel() {
@@ -33,10 +36,11 @@ class MoviesViewModel @Inject constructor(
 
     private val _state = MutableStateFlow<MoviesScreenState>(Loading)
     val state: Flow<MoviesScreenState> = _state
+    private val _action = MutableSharedFlow<Action>()
+    val action: Flow<Action> = _action
 
     private var query: String = ""
     private var queryReloadJob: Job? = null
-
     private var cachedItems: List<Movie> = emptyList()
 
     init {
@@ -88,13 +92,25 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun onItemFavoriteClicked(movie: MovieScreenItem) {
-        favoritesRepository.toggleFavoriteMovie(movie)
+    fun onItemClicked(movieId: Int) {
+        val movie = cachedItems.first { it.id == movieId }
+        val movieItem = mapToScreenMovieScreenItem(movie)
+        viewModelScope.launch {
+            _action.emit(Action.NavigateToDetails(movieItem))
+        }
+    }
+
+    fun onItemFavoriteClicked(movieId: Int) {
+        favoritesRepository.toggleFavoriteMovie(movieId)
         updateContent()
     }
 
     fun onResume() {
         updateContent()
+    }
+
+    sealed class Action {
+        data class NavigateToDetails(val movie: MovieScreenItem) : Action()
     }
 
 }

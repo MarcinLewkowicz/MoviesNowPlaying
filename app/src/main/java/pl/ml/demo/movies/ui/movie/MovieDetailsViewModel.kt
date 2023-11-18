@@ -15,13 +15,14 @@ class MovieDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val navArgs = MovieDetailsFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    private val movie = navArgs.movie
 
     private val _state = MutableStateFlow(MovieDetailsScreenState(navArgs.movie))
     val state: Flow<MovieDetailsScreenState> = _state
 
 
     fun onItemFavoriteClicked() {
-        toggleFavoriteMovieUseCase(navArgs.movie)
+        toggleFavoriteMovieUseCase(movie.id)
         // Temporary workaround since we have a MovieScreenItem not a Movie and there is no cached Movies in repository,
         // so we can't use MapToMovieScreenItemUseCase to apply updated favorite flag.
         // TODO - do it better.
