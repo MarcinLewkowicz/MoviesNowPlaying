@@ -5,4 +5,6 @@
     <string name="movie_details_date_label">Data wydania: %s</string>
     <string name="add_to_favorites">Dodaj do ulubionych</string>
     <string name="remove_from_favorites">Usuń z ulubionych</string>
+    <string name="no_results">Nic nie znaleziono.</string>
+    <string name="retry">Spróbuj ponownie</string>
 </resources>

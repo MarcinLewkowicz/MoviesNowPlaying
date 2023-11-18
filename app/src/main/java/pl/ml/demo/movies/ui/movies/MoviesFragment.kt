@@ -47,6 +47,9 @@ class MoviesFragment : Fragment() {
         binding.moviesList.layoutManager = GridLayoutManager(context, columnCount)
         adapter = MoviesRecyclerViewAdapter(viewModel::onItemClicked, viewModel::onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
+        binding.errorViewRetryButton.setOnClickListener {
+            viewModel.onRetryButtonClicked()
+        }
     }
 
     private fun setupSearchView(binding: FragmentMoviesListBinding) {
@@ -78,7 +81,14 @@ class MoviesFragment : Fragment() {
                         adapter.setValues(it.movies)
                     }
                     is MoviesScreenState.Error -> {
-                        binding.errorView.text = it.errorMessage
+                        binding.errorViewIcon.setImageResource(it.iconId)
+                        binding.errorViewText.text = it.errorMessage
+                        binding.errorViewRetryButton.isVisible = it.retryButtonVisible
+                        // This helps removing content from recycler view when the error occurs e.g. after searching and then getting back to main list.
+                        // TODO - the state might be joined into one class so the content could be delivered from view model here
+                        adapter.setValues(emptyList())
+                        @Suppress("NotifyDataSetChanged")
+                        adapter.notifyDataSetChanged()
                     }
                     MoviesScreenState.Loading -> { /* nothing else to do */ }
                 }

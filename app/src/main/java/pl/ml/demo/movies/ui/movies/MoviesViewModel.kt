@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import pl.ml.demo.movies.R
+import pl.ml.demo.movies.config.ResourceProvider
 import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.data.repository.FavoritesRepository
 import pl.ml.demo.movies.data.util.Result
@@ -29,6 +31,7 @@ class MoviesViewModel @Inject constructor(
     private val mapToScreenMovieScreenItem: MapToMovieScreenItemUseCase,
     private val mapToScreenMoviesListUseCase: MapToMovieScreenItemsListUseCase,
     private val favoritesRepository: FavoritesRepository,
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
 
     private val TAG = "MoviesViewModel"
@@ -54,13 +57,17 @@ class MoviesViewModel @Inject constructor(
             val result = getMoviesListUseCase(query)
             when (result) {
                 is Result.Success -> {
-                    cachedItems = result.data
-                    val screenItems = mapToScreenMoviesListUseCase(result.data)
-                    _state.value = Content(screenItems)
+                    if (result.data.isEmpty()) {
+                        _state.value = Error(resourceProvider.getString(R.string.no_results), R.drawable.ic_not_found, retryButtonVisible = false)
+                    } else {
+                        cachedItems = result.data
+                        val screenItems = mapToScreenMoviesListUseCase(result.data)
+                        _state.value = Content(screenItems)
+                    }
                 }
                 is Result.Error -> {
-                    // TODO - change to user-friendly info
-                    _state.value = Error(result.exception.message ?: "")
+                    // TODO - consider changing to more user-friendly info
+                    _state.value = Error(result.exception.message ?: "", R.drawable.ic_warning, retryButtonVisible = true)
                 }
             }
         }
@@ -107,6 +114,10 @@ class MoviesViewModel @Inject constructor(
 
     fun onResume() {
         updateContent()
+    }
+
+    fun onRetryButtonClicked() {
+        loadContent()
     }
 
     sealed class Action {
