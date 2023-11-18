@@ -9,7 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import pl.ml.demo.movies.R
-import pl.ml.demo.movies.domain.model.MovieItem
+import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.ui.movies.MoviesFragmentDirections
 
 @AndroidEntryPoint
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainNavigationInterface {
         navController.popBackStack()
     }
 
-    override fun navigateToMovieDetails(movie: MovieItem) {
+    override fun navigateToMovieDetails(movie: MovieScreenItem) {
         val direction = MoviesFragmentDirections.showMovieDetailsFragment(movie)
         navController.navigate(direction)
     }

@@ -1,6 +1,6 @@
 package pl.ml.demo.movies.data.repository
 
-import pl.ml.demo.movies.domain.model.MovieItem
+import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.storage.FavoritesStorage
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +13,7 @@ class FavoritesRepository @Inject constructor(
     private val favorites: MutableSet<Int> =
         storage.getFavorites().toMutableSet()
 
-    fun toggleFavoriteMovie(movie: MovieItem) {
+    fun toggleFavoriteMovie(movie: MovieScreenItem) {
         if (favorites.contains(movie.id)) {
             removeFromFavorites(movie.id)
         } else {

@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.databinding.FragmentMoviesListBinding
-import pl.ml.demo.movies.domain.model.MovieItem
+import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.ui.MainNavigationInterface
 import pl.ml.demo.movies.ui.utils.MarginItemDecoration
 
@@ -35,6 +35,12 @@ class MoviesFragment : Fragment() {
         setupSearchView(binding)
         collectState(binding)
         return binding.root
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
     }
 
     private fun setupViews(binding: FragmentMoviesListBinding) {
@@ -87,7 +93,7 @@ class MoviesFragment : Fragment() {
         }
     }
 
-    private val onItemClicked: (MovieItem) -> Unit = {
+    private val onItemClicked: (MovieScreenItem) -> Unit = {
         (activity as? MainNavigationInterface)?.navigateToMovieDetails(it)
     }
 

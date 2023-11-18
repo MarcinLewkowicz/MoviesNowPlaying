@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MovieItem(
+data class MovieScreenItem(
     val id: Int,
     val title: String,
     val overview: String,

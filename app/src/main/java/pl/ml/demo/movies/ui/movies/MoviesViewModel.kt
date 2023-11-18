@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 import pl.ml.demo.movies.data.model.Movie
 import pl.ml.demo.movies.data.repository.FavoritesRepository
 import pl.ml.demo.movies.data.util.Result
-import pl.ml.demo.movies.domain.model.MovieItem
+import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.domain.usecase.GetMoviesListUseCase
-import pl.ml.demo.movies.domain.usecase.MapToScreenMoviesListUseCase
+import pl.ml.demo.movies.domain.usecase.MapToMovieScreenItemsListUseCase
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Content
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Error
 import pl.ml.demo.movies.ui.movies.MoviesScreenState.Loading
@@ -24,7 +24,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val getMoviesListUseCase: GetMoviesListUseCase,
-    private val mapToScreenMoviesListUseCase: MapToScreenMoviesListUseCase,
+    private val mapToScreenMoviesListUseCase: MapToMovieScreenItemsListUseCase,
     private val favoritesRepository: FavoritesRepository,
 ) : ViewModel() {
 
@@ -88,8 +88,12 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    fun onItemFavoriteClicked(movie: MovieItem) {
+    fun onItemFavoriteClicked(movie: MovieScreenItem) {
         favoritesRepository.toggleFavoriteMovie(movie)
+        updateContent()
+    }
+
+    fun onResume() {
         updateContent()
     }
 

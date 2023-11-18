@@ -9,7 +9,7 @@
     tools:context=".ui.movie.MovieDetailsFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/movie_details_toolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"

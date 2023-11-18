@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.databinding.ItemMovieBinding
-import pl.ml.demo.movies.domain.model.MovieItem
+import pl.ml.demo.movies.domain.model.MovieScreenItem
 
 
 class MoviesRecyclerViewAdapter(
-    private val onItemClicked: (MovieItem) -> Unit,
-    private val onItemFavoriteClicked: (MovieItem) -> Unit
+    private val onItemClicked: (MovieScreenItem) -> Unit,
+    private val onItemFavoriteClicked: (MovieScreenItem) -> Unit
 ) : RecyclerView.Adapter<MoviesRecyclerViewAdapter.ViewHolder>() {
 
     private val TAG = "MoviesRecyclerViewAdapter"
-    private var values: List<MovieItem> = emptyList()
+    private var values: List<MovieScreenItem> = emptyList()
     override fun getItemCount(): Int = values.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,7 +56,7 @@ class MoviesRecyclerViewAdapter(
         }
     }
 
-    fun setValues(newValues: List<MovieItem>) {
+    fun setValues(newValues: List<MovieScreenItem>) {
         val callback = DiffCallback(values, newValues)
         val diff = DiffUtil.calculateDiff(callback)
         values = newValues
@@ -71,7 +71,7 @@ class MoviesRecyclerViewAdapter(
 
     private val KEY_FAVORITE = "KEY_FAVORITE"
 
-    inner class DiffCallback(private val oldValues: List<MovieItem>, private val newValues: List<MovieItem>) : Callback() {
+    inner class DiffCallback(private val oldValues: List<MovieScreenItem>, private val newValues: List<MovieScreenItem>) : Callback() {
 
         override fun getOldListSize(): Int = oldValues.size
 
