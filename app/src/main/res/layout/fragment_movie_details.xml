@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="?android:colorBackground"
+    android:orientation="vertical"
     tools:context=".ui.movie.MovieDetailsFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
-        app:navigationIcon="@drawable/ic_back"
-        app:menu="@menu/movie_details_toolbar_menu"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:menu="@menu/movie_details_toolbar_menu"
+        app:navigationIcon="@drawable/ic_back"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,34 +31,34 @@
                 android:id="@+id/movie_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
+                android:contentDescription="@string/movie_details_image_content_description"
                 android:minHeight="200dp"
-                tools:src="@drawable/ic_launcher_background"
-                android:contentDescription="@string/movie_details_image_content_description"/>
+                android:scaleType="centerCrop"
+                tools:src="@drawable/ic_launcher_background" />
 
             <TextView
                 android:id="@+id/movie_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/details_text_margin"
-                android:layout_marginRight="@dimen/details_text_margin"
                 android:layout_marginTop="@dimen/details_normal_spacing"
+                android:layout_marginRight="@dimen/details_text_margin"
                 android:layout_marginBottom="@dimen/details_normal_spacing"
-                tools:text="The Great Movie"
-                android:textAppearance="?attr/textAppearanceTitleLarge"/>
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                tools:text="The Great Movie" />
 
             <TextView
                 android:id="@+id/movie_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/details_text_margin"
                 android:layout_marginRight="@dimen/details_text_margin"
                 android:layout_marginBottom="@dimen/details_small_spacing"
-                android:drawableStart="@drawable/ic_rating"
                 android:drawablePadding="@dimen/details_rate_margin"
+                android:gravity="center_vertical"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                tools:text="4.5/10"/>
+                app:drawableStartCompat="@drawable/ic_rating"
+                tools:text="4.5/10" />
 
             <TextView
                 android:id="@+id/movie_date"
@@ -67,18 +67,18 @@
                 android:layout_marginLeft="@dimen/details_text_margin"
                 android:layout_marginRight="@dimen/details_text_margin"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                tools:text="Data wydania: 2020"/>
+                tools:text="Data wydania: 2020" />
 
             <TextView
                 android:id="@+id/movie_overview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/details_text_margin"
-                android:layout_marginRight="@dimen/details_text_margin"
                 android:layout_marginTop="@dimen/details_normal_spacing"
+                android:layout_marginRight="@dimen/details_text_margin"
                 android:layout_marginBottom="@dimen/details_normal_spacing"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis tellus egestas, maximus sapien quis, molestie lorem. Proin pulvinar auctor arcu eget tincidunt."
-                android:textAppearance="?attr/textAppearanceBodyMedium"/>
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quis tellus egestas, maximus sapien quis, molestie lorem. Proin pulvinar auctor arcu eget tincidunt." />
 
         </LinearLayout>
 
