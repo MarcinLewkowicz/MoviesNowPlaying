@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Movies Now Playing Demo</string>
     <string name="movie_details_image_content_description">Okładka filmu</string>
-    <string name="detail_rating_label">%.1f/10</string>
+    <string name="movie_details_rating_label">%s/10</string>
+    <string name="movie_details_date_label">Data wydania: %s</string>
     <string name="add_to_favorites">Dodaj do ulubionych</string>
+    <string name="remove_from_favorites">Usuń z ulubionych</string>
 </resources>

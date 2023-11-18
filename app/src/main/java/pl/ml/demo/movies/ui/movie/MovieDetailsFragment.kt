@@ -44,8 +44,8 @@ class MovieDetailsFragment : Fragment() {
                     }
                     movieTitle.text = movie.title
                     movieOverview.text = movie.overview
-                    movieDate.text = movie.releaseDate
-                    movieRate.text = movie.voteAverage
+                    movieDate.text = getString(R.string.movie_details_date_label, movie.releaseDate)
+                    movieRate.text = getString(R.string.movie_details_rating_label, movie.voteAverage)
                     toolbar.menu.findItem(R.id.action_favorite)
                         .setIcon(if (movie.isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star)
                 }
