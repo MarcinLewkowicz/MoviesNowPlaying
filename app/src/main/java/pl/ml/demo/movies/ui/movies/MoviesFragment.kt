@@ -64,8 +64,10 @@ class MoviesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                Log.d(TAG, "onQueryTextChange: $newText")
-                viewModel.onQueryChanged(newText)
+                if (!searchView.isIconified) {
+                    Log.d(TAG, "onQueryTextChange: $newText")
+                    viewModel.onQueryChanged(newText)
+                }
                 return true
             }
         })
