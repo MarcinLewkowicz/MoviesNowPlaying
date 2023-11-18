@@ -18,8 +18,8 @@ class MapToMovieScreenItemUseCase @Inject constructor(
             id = movie.id,
             title = movie.title,
             overview = movie.overview,
-            backdropUrl = configProvider.getImageBaseUrl() + movie.backdropPath,
-            posterUrl = configProvider.getImageBaseUrl() + movie.posterPath,
+            backdropUrl = movie.backdropPath?.let { configProvider.getImageBaseUrl() + it },
+            posterUrl = movie.posterPath?.let { configProvider.getImageBaseUrl() + it},
             releaseDate = movie.releaseDate,
             voteAverage = String.format("%.1f", movie.voteAverage),
             isFavorite = favoritesRepository.isFavorite(movie.id)

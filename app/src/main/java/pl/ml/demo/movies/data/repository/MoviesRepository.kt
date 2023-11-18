@@ -20,8 +20,13 @@ class MoviesRepository @Inject constructor(
         }
     }
 
-    fun searchMovies(query: String): Result<List<Movie>> {
-        return Result.Error(Exception("Nothing found for '$query'."))
+    suspend fun searchMovies(query: String): Result<List<Movie>> {
+        return try {
+            val movies = api.searchMovie(query)
+            Result.Success(movies.results)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 
 }
