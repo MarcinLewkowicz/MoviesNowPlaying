@@ -31,7 +31,7 @@ class MoviesRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder()")
         val item = getItem(position)
-        holder.bind(item)
+        holder.bindAll(item)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -41,7 +41,7 @@ class MoviesRecyclerViewAdapter(
         } else {
             val item = getItem(position)
             if (item != null) {
-                holder.favoriteView.isSelected = item.isFavorite
+                holder.bindFavorite(item)
             }
         }
     }
@@ -49,9 +49,9 @@ class MoviesRecyclerViewAdapter(
     inner class ViewHolder(binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         private val imageView: ImageView = binding.moviePicture
         private val titleView: TextView = binding.movieTitle
-        val favoriteView: ImageView = binding.favoriteIcon
+        private val favoriteView: ImageView = binding.favoriteIcon
 
-        fun bind(item: MovieScreenItem?) {
+        fun bindAll(item: MovieScreenItem?) {
             imageView.load(item?.posterUrl) {
                 placeholder(R.color.image_placeholder)
                 fallback(R.color.image_placeholder)
@@ -70,6 +70,16 @@ class MoviesRecyclerViewAdapter(
             } else {
                 favoriteView.isVisible = false
                 itemView.setOnClickListener(null)
+            }
+        }
+
+        fun bindFavorite(item: MovieScreenItem) {
+            favoriteView.isSelected = item.isFavorite
+            // Update the item in the listener otherwise old copy from bindAll() (with another favorite state) will be passed to callback ad then to detaild screen.
+            // The other solution would be to store item in view holder and reference it instead of the local copy.
+            // Another solution is to pass only movie ID, but currently there is no cache in the app, and there is no loading details on details screen.
+            itemView.setOnClickListener {
+                onItemClicked(item)
             }
         }
     }
