@@ -39,8 +39,10 @@
 
     <ImageView
         android:id="@+id/favorite_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.22"
+        app:layout_constraintDimensionRatio="H,1:1"
         android:layout_margin="@dimen/list_favorite_icon_margin"
         android:background="@drawable/list_favorite_icon_background"
         android:contentDescription="@string/add_to_favorites"
