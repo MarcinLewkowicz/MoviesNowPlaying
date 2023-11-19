@@ -13,9 +13,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.data.repository.FavoritesRepository
@@ -37,33 +37,38 @@ class MoviesViewModel @Inject constructor(
     private val QUERY_THROTTLE_TIME = 500.milliseconds
 
     private var query = MutableStateFlow<String?>(null)
+    private val refreshPagedDataFlow = MutableSharedFlow<Unit>()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val state = query
         .filter { it.isNullOrEmpty() || it.length >= MIN_QUERY_LENGTH }
         .transformLatest {
+            // Delay and throttle query to avoid fast consecutive requests to backend when user is still typing
             if (it?.isNotEmpty() == true) delay(QUERY_THROTTLE_TIME)
             emit(it)
         }
         .flatMapLatest {
-            val pager = Pager(PagingConfig(pageSize = 20)) {
+            Pager(PagingConfig(pageSize = 20)) {
                 MoviesPagingSource(getMoviesListUseCase, it)
-            }
-            // Get flow and convert Movie to MovieScreenItem
-            pager.flow.map { pagingData ->
-                pagingData.map {
-                    mapToScreenMovieScreenItem(it)
-                }
+            }.flow
+        }
+        .cachedIn(viewModelScope)
+        // Map the data again on every update requested UI refresh (without fetching the data from backend again)
+        .combine(refreshPagedDataFlow) { data, _ ->
+            data.map {
+                mapToScreenMovieScreenItem(it)
             }
         }
+        // This is needed again otherwise submitData gets stuck with whole flow causing favorites button not working.
         .cachedIn(viewModelScope)
 
     private val _action = MutableSharedFlow<Action>()
     val action: Flow<Action> = _action
 
     private fun updateContent() {
-//        val screenItems = mapToScreenMoviesListUseCase(cachedItems)
-//        _state.value = Content(screenItems)
+        viewModelScope.launch {
+            refreshPagedDataFlow.emit(Unit)
+        }
     }
 
     fun onQueryChanged(newText: String?) {
