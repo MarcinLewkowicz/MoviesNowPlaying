@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.paging)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -15,6 +15,7 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -51,7 +52,7 @@ class MoviesFragment : Fragment() {
         adapter = MoviesRecyclerViewAdapter(viewModel::onItemClicked, viewModel::onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
         binding.errorViewRetryButton.setOnClickListener {
-            viewModel.onRetryButtonClicked()
+            adapter.retry()
         }
     }
 
@@ -101,24 +102,15 @@ class MoviesFragment : Fragment() {
     private fun collectState(binding: FragmentMoviesListBinding) {
         viewLifecycleScope.launch {
             viewModel.state.collect {
-                binding.moviesList.isVisible = it !is MoviesScreenState.Error
-                binding.errorView.isVisible = it is MoviesScreenState.Error
-                when (it) {
-                    is MoviesScreenState.Content -> {
-                        adapter.setValues(it.movies)
-                    }
-                    is MoviesScreenState.Error -> {
-                        binding.errorViewIcon.setImageResource(it.iconId)
-                        binding.errorViewText.text = it.errorMessage
-                        binding.errorViewRetryButton.isVisible = it.retryButtonVisible
-                        // This helps removing content from recycler view when the error occurs e.g. after searching and then getting back to main list.
-                        // TODO - the state might be joined into one class so the content could be delivered from view model here
-                        adapter.setValues(emptyList())
-                        @Suppress("NotifyDataSetChanged")
-                        adapter.notifyDataSetChanged()
-                    }
-                    MoviesScreenState.Loading -> { /* nothing else to do */ }
-                }
+                adapter.submitData(it)
+            }
+        }
+        viewLifecycleScope.launch {
+            adapter.loadStateFlow.collect {
+                binding.progressBar.isVisible = it.refresh is LoadState.Loading
+                binding.errorViewRetryButton.isVisible = it.refresh is LoadState.Error
+                binding.errorViewText.text = (it.refresh as? LoadState.Error)?.error?.message ?: ""
+                binding.errorView.isVisible = it.refresh is LoadState.Error
             }
         }
         viewLifecycleScope.launch {

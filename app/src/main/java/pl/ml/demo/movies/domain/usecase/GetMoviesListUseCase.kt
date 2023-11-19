@@ -11,11 +11,11 @@ class GetMoviesListUseCase @Inject constructor(
     private val moviesRepository: MoviesRepository,
 ) {
 
-    suspend operator fun invoke(query: String): Result<List<Movie>> {
-        return if (query.isEmpty()) {
-            moviesRepository.getMoviesNowPlaying()
+    suspend operator fun invoke(query: String?, pageNumber: Int): Result<List<Movie>> {
+        return if (query.isNullOrEmpty()) {
+            moviesRepository.getMoviesNowPlaying(pageNumber)
         } else {
-            moviesRepository.searchMovies(query)
+            moviesRepository.searchMovies(query, pageNumber)
         }
     }
 

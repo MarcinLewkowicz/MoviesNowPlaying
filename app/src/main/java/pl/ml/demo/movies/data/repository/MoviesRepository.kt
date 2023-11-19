@@ -11,18 +11,18 @@ class MoviesRepository @Inject constructor(
     private val api: MoviesApi
 ) {
 
-    suspend fun getMoviesNowPlaying(): Result<List<Movie>> {
+    suspend fun getMoviesNowPlaying(page: Int): Result<List<Movie>> {
         return try {
-            val movies = api.getMoviesNowPlaying()
+            val movies = api.getMoviesNowPlaying(page)
             Result.Success(movies.results)
         } catch (e: Exception) {
             Result.Error(e)
         }
     }
 
-    suspend fun searchMovies(query: String): Result<List<Movie>> {
+    suspend fun searchMovies(query: String, page: Int): Result<List<Movie>> {
         return try {
-            val movies = api.searchMovie(query)
+            val movies = api.searchMovie(query, page)
             Result.Success(movies.results)
         } catch (e: Exception) {
             Result.Error(e)
