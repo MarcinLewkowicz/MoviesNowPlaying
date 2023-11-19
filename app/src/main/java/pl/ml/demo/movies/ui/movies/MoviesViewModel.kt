@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -14,19 +15,20 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.data.repository.FavoritesRepository
 import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.domain.usecase.GetMoviesListUseCase
-import pl.ml.demo.movies.domain.usecase.MapToMovieScreenItemsListUseCase
+import pl.ml.demo.movies.domain.usecase.MapToMovieScreenItemUseCase
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val getMoviesListUseCase: GetMoviesListUseCase,
-    private val mapToScreenMoviesListUseCase: MapToMovieScreenItemsListUseCase,
+    private val mapToScreenMovieScreenItem: MapToMovieScreenItemUseCase,
     private val favoritesRepository: FavoritesRepository,
 ) : ViewModel() {
 
@@ -44,9 +46,15 @@ class MoviesViewModel @Inject constructor(
             emit(it)
         }
         .flatMapLatest {
-            Pager(PagingConfig(pageSize = 20)) {
-                MoviesPagingSource(getMoviesListUseCase, mapToScreenMoviesListUseCase, it)
-            }.flow
+            val pager = Pager(PagingConfig(pageSize = 20)) {
+                MoviesPagingSource(getMoviesListUseCase, it)
+            }
+            // Get flow and convert Movie to MovieScreenItem
+            pager.flow.map { pagingData ->
+                pagingData.map {
+                    mapToScreenMovieScreenItem(it)
+                }
+            }
         }
         .cachedIn(viewModelScope)
 
