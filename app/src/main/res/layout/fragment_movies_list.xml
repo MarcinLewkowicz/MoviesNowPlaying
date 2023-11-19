@@ -38,7 +38,9 @@
             android:layout_gravity="center"
             android:layout_margin="48dp"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/error_view_icon"
@@ -69,7 +71,9 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </FrameLayout>
 
