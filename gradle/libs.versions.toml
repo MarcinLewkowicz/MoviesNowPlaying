@@ -1,11 +1,13 @@
 [versions]
-activity = "1.8.0"
+activity = "1.8.1"
 agp = "8.1.4"
+androidXTest = "1.5.0"
 appcompat = "1.6.1"
 coil = "2.5.0"
 constraintlayout = "2.1.4"
 coreKtx = "1.12.0"
 espressoCore = "3.5.1"
+googleTruth = "1.1.4"
 hilt = "2.48.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -13,6 +15,8 @@ kotlin = "1.9.10"
 kotlinxSerializationJson = "1.6.1"
 legacySupportV4 = "1.0.0"
 material = "1.10.0"
+mockito = "5.7.0"
+mockitoKotlin = "5.1.0"
 navigation = "2.7.5"
 okhttp = "4.12.0"
 paging = "3.2.1"
@@ -36,9 +40,14 @@ coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test = { group = "androidx.test", name = "core", version.ref = "androidXTest" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+google-truth = { group = "com.google.truth", name = "truth", version.ref = "googleTruth" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 
@@ -50,4 +59,3 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlin"  }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-
