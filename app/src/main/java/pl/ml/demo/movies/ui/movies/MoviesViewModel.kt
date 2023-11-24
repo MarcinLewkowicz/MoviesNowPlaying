@@ -39,6 +39,9 @@ class MoviesViewModel @Inject constructor(
     private var query = MutableStateFlow<String?>(null)
     private val refreshPagedDataFlow = MutableSharedFlow<Unit>()
 
+    private val _action = MutableSharedFlow<Action>()
+    val action: Flow<Action> = _action
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val state = query
         .filter { it.isNullOrEmpty() || it.length >= MIN_QUERY_LENGTH }
@@ -62,8 +65,6 @@ class MoviesViewModel @Inject constructor(
         // This is needed again otherwise submitData gets stuck with whole flow causing favorites button not working.
         .cachedIn(viewModelScope)
 
-    private val _action = MutableSharedFlow<Action>()
-    val action: Flow<Action> = _action
 
     private fun updateContent() {
         viewModelScope.launch {

@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.ml.demo.movies.R
 import pl.ml.demo.movies.databinding.FragmentMoviesListBinding
+import pl.ml.demo.movies.domain.model.MovieScreenItem
 import pl.ml.demo.movies.ui.MainNavigationInterface
 import pl.ml.demo.movies.ui.utils.viewLifecycleScope
 
@@ -116,14 +117,14 @@ class MoviesFragment : Fragment() {
         viewLifecycleScope.launch {
             viewModel.action.collect {
                 when (it) {
-                    is MoviesViewModel.Action.NavigateToDetails -> navigateToMovieDetails(it)
+                    is MoviesViewModel.Action.NavigateToDetails -> navigateToMovieDetails(it.movie)
                 }
             }
         }
     }
 
-    private fun navigateToMovieDetails(it: MoviesViewModel.Action.NavigateToDetails) {
-        (activity as? MainNavigationInterface)?.navigateToMovieDetails(it.movie)
+    private fun navigateToMovieDetails(movie: MovieScreenItem) {
+        (activity as? MainNavigationInterface)?.navigateToMovieDetails(movie)
     }
 
     inner class LocalOnBackPressedCallback(private val binding: FragmentMoviesListBinding) : OnBackPressedCallback(false) {
