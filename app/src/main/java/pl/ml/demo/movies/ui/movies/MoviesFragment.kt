@@ -30,13 +30,13 @@ class MoviesFragment : Fragment() {
 
     private val TAG = "MoviesFragment"
     private val viewModel: MoviesViewModel by viewModels()
-    private lateinit var adapter: MoviesRecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentMoviesListBinding.inflate(inflater, container, false)
-        setupViews(binding)
+        val adapter = MoviesRecyclerViewAdapter(viewModel::onItemClicked, viewModel::onItemFavoriteClicked)
+        setupViews(binding, adapter)
         setupSearchView(binding)
-        collectState(binding)
+        collectState(binding, adapter)
         return binding.root
     }
 
@@ -46,11 +46,10 @@ class MoviesFragment : Fragment() {
         viewModel.onResume()
     }
 
-    private fun setupViews(binding: FragmentMoviesListBinding) {
+    private fun setupViews(binding: FragmentMoviesListBinding, adapter: MoviesRecyclerViewAdapter) {
         val columnCount =
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
         binding.moviesList.layoutManager = GridLayoutManager(context, columnCount)
-        adapter = MoviesRecyclerViewAdapter(viewModel::onItemClicked, viewModel::onItemFavoriteClicked)
         binding.moviesList.adapter = adapter
         binding.errorViewRetryButton.setOnClickListener {
             adapter.retry()
@@ -100,7 +99,7 @@ class MoviesFragment : Fragment() {
         })
     }
 
-    private fun collectState(binding: FragmentMoviesListBinding) {
+    private fun collectState(binding: FragmentMoviesListBinding, adapter: MoviesRecyclerViewAdapter) {
         viewLifecycleScope.launch {
             viewModel.state.collect {
                 adapter.submitData(it)
